@@ -34,12 +34,17 @@ public class PlayerGUI extends javax.swing.JFrame {
         initModel();
     }
 
-    private void initModel(/*Path path*/) {
-        //this.stm = new SongTableModel(FFCSVFile.read(path));
+    /**
+     * Initsialisiert das TableModel
+     */
+    private void initModel() {
         this.stm = new SongTableModel();
         tbSongs.setModel(stm);
     }
-
+    /**
+     * Initsialisiert den JFileChooser
+     * Selection Mode wird auf Directories beschränkt
+     */
     private void initFileChooser() {
         fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -64,6 +69,7 @@ public class PlayerGUI extends javax.swing.JFrame {
         tbSongs = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Audio Player");
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 5));
 
@@ -161,6 +167,11 @@ public class PlayerGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Vom JFileChooser wird ein Directory Pfad zurückgegeben
+     * Im TableModel werden alle Songs hinzugefügt
+     * @param evt 
+     */
     private void onAddSongs(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddSongs
         int i = fileChooser.showOpenDialog(this);
         if (i == JFileChooser.APPROVE_OPTION) {
@@ -169,6 +180,11 @@ public class PlayerGUI extends javax.swing.JFrame {
         stm.add(f);
     }//GEN-LAST:event_onAddSongs
 
+    /**
+     * Ist eine Reihe im Table ausgewählt wird der Song abgespielt
+     * Oder die Musik stoppt komplett
+     * @param evt 
+     */
     private void onPlayPause(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayPause
         indexPlaying = tbSongs.getSelectedRow();
         if (indexPlaying == -1) {
@@ -191,6 +207,11 @@ public class PlayerGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_onErstelleListe
 
+    /**
+     * Lautstärkeregelung mit Hilfe von nircmd
+     * nircmd führt Befehle aus, um Windows Systemlautstärke zu ändern
+     * @param evt 
+     */
     private void onChangeVolume(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_onChangeVolume
         int volume = slVolume.getValue();
         if (volume < 0 || volume > 100) {
@@ -209,6 +230,11 @@ public class PlayerGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_onChangeVolume
 
+    /**
+     * Es wird zum nächsten Song gesprungen
+     * Ist es der letzte Song in der Liste, wird der Erste Song wiedergegeben
+     * @param evt 
+     */
     private void onSkipForward(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onSkipForward
         int listSize = stm.getListSize();
         ap.stopMusic();
@@ -223,6 +249,11 @@ public class PlayerGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_onSkipForward
 
+    /**
+     * Es wird zum vorherigen Song gesprungen
+     * Ist es der Erste Song in der Liste, wird der Letzte wiedergegeben
+     * @param evt 
+     */
     private void onSkipBack(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onSkipBack
         int listSize = stm.getListSize();
         ap.stopMusic();
