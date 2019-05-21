@@ -30,7 +30,7 @@ public class AudioPlayer extends Thread {
             playerThread = new Thread() {
                 public void run() {
                     try {
-                        player.play(5000);
+                        player.play(500000);
                     } catch (JavaLayerException e) {
                         meldeProblem();
                     } finally {
