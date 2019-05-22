@@ -8,10 +8,13 @@ package gui;
 import bl.AudioPlayer;
 import bl.SongTableModel;
 import data.Song;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -29,9 +32,9 @@ public class PlayerGUI extends javax.swing.JFrame {
     public PlayerGUI() {
         initComponents();
         initFileChooser();
+        initModel();
         ap = new AudioPlayer();
         isPlaying = false;
-        initModel();
     }
 
     /**
@@ -41,9 +44,10 @@ public class PlayerGUI extends javax.swing.JFrame {
         this.stm = new SongTableModel();
         tbSongs.setModel(stm);
     }
+
     /**
-     * Initsialisiert den JFileChooser
-     * Selection Mode wird auf Directories beschränkt
+     * Initsialisiert den JFileChooser Selection Mode wird auf Directories
+     * beschränkt
      */
     private void initFileChooser() {
         fileChooser = new JFileChooser();
@@ -158,6 +162,11 @@ public class PlayerGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbSongs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onClickPlaySong(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbSongs);
 
         paTable.add(jScrollPane1);
@@ -168,9 +177,10 @@ public class PlayerGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Vom JFileChooser wird ein Directory Pfad zurückgegeben
-     * Im TableModel werden alle Songs hinzugefügt
-     * @param evt 
+     * Vom JFileChooser wird ein Directory Pfad zurückgegeben Im TableModel
+     * werden alle Songs hinzugefügt
+     *
+     * @param evt
      */
     private void onAddSongs(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddSongs
         int i = fileChooser.showOpenDialog(this);
@@ -181,9 +191,10 @@ public class PlayerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_onAddSongs
 
     /**
-     * Ist eine Reihe im Table ausgewählt wird der Song abgespielt
-     * Oder die Musik stoppt komplett
-     * @param evt 
+     * Ist eine Reihe im Table ausgewählt wird der Song abgespielt Oder die
+     * Musik stoppt komplett
+     *
+     * @param evt
      */
     private void onPlayPause(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayPause
         indexPlaying = tbSongs.getSelectedRow();
@@ -208,9 +219,10 @@ public class PlayerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_onErstelleListe
 
     /**
-     * Lautstärkeregelung mit Hilfe von nircmd
-     * nircmd führt Befehle aus, um Windows Systemlautstärke zu ändern
-     * @param evt 
+     * Lautstärkeregelung mit Hilfe von nircmd nircmd führt Befehle aus, um
+     * Windows Systemlautstärke zu ändern
+     *
+     * @param evt
      */
     private void onChangeVolume(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_onChangeVolume
         int volume = slVolume.getValue();
@@ -231,9 +243,10 @@ public class PlayerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_onChangeVolume
 
     /**
-     * Es wird zum nächsten Song gesprungen
-     * Ist es der letzte Song in der Liste, wird der Erste Song wiedergegeben
-     * @param evt 
+     * Es wird zum nächsten Song gesprungen Ist es der letzte Song in der Liste,
+     * wird der Erste Song wiedergegeben
+     *
+     * @param evt
      */
     private void onSkipForward(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onSkipForward
         int listSize = stm.getListSize();
@@ -250,9 +263,10 @@ public class PlayerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_onSkipForward
 
     /**
-     * Es wird zum vorherigen Song gesprungen
-     * Ist es der Erste Song in der Liste, wird der Letzte wiedergegeben
-     * @param evt 
+     * Es wird zum vorherigen Song gesprungen Ist es der Erste Song in der
+     * Liste, wird der Letzte wiedergegeben
+     *
+     * @param evt
      */
     private void onSkipBack(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onSkipBack
         int listSize = stm.getListSize();
@@ -267,6 +281,26 @@ public class PlayerGUI extends javax.swing.JFrame {
             indexPlaying--;
         }
     }//GEN-LAST:event_onSkipBack
+
+    private void onClickPlaySong(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onClickPlaySong
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            indexPlaying = tbSongs.getSelectedRow();
+            if (indexPlaying == -1) {
+                JOptionPane.showMessageDialog(this, "Bitte einen Song auswählen!");
+            } else {
+                Song s = stm.getSong(indexPlaying);
+                if (isPlaying) {
+                    isPlaying = false;
+                    ap.stopMusic();
+                    btPlayPause.setText("Play");
+                } else {
+                    isPlaying = true;
+                    ap.starteAbspielen(new File(s.getFilePath()));
+                    btPlayPause.setText("Stop");
+                }
+            }
+        }
+    }//GEN-LAST:event_onClickPlaySong
 
     /**
      * @param args the command line arguments
