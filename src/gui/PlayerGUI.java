@@ -289,15 +289,11 @@ public class PlayerGUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Bitte einen Song auswählen!");
             } else {
                 Song s = stm.getSong(indexPlaying);
-                if (isPlaying) {
-                    isPlaying = false;
-                    ap.stopMusic();
-                    btPlayPause.setText("Play");
-                } else {
-                    isPlaying = true;
-                    ap.starteAbspielen(new File(s.getFilePath()));
-                    btPlayPause.setText("Stop");
-                }
+                ap.stopMusic();
+                isPlaying = true;
+                ap.starteAbspielen(new File(s.getFilePath()));
+                btPlayPause.setText("Stop");
+
             }
         }
     }//GEN-LAST:event_onClickPlaySong
