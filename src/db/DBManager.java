@@ -10,13 +10,13 @@ import java.sql.Statement;
 
 public class DBManager {
 
-     private final DBPropertiesManager dbpm;
+     private final DBPropertiesManager dbpm = DBPropertiesManager.getInstance();;
     private final Connection con;
 
     private DBManager() {
         try
         {
-        dbpm = DBPropertiesManager.getInstance();
+        //dbpm = DBPropertiesManager.getInstance();
             dbpm.createProperties(ConfigEnum.DERBY); //<= hier her, d.h. bevor getDriver verwendet wird !!
         Class.forName(dbpm.getDriver());
        con = DriverManager.getConnection(dbpm.getUrl(),
