@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class DBManager {
 
-     private final DBPropertiesManager dbpm = DBPropertiesManager.getInstance();;
+     private final DBPropertiesManager dbpm = DBPropertiesManager.getInstance();
     private final Connection con;
 
     private DBManager() {
