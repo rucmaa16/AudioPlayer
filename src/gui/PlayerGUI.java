@@ -8,6 +8,7 @@ package gui;
 import bl.AudioPlayer;
 import bl.SongTableModel;
 import data.Song;
+import db.AccessDB;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
@@ -215,7 +216,7 @@ public class PlayerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_onPlayPause
 
     private void onErstelleListe(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onErstelleListe
-
+        stm.addToDB();
     }//GEN-LAST:event_onErstelleListe
 
     /**

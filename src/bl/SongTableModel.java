@@ -1,10 +1,14 @@
 package bl;
 
 import data.Song;
+import db.AccessDB;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import sort.CompTitle;
 
@@ -100,5 +104,17 @@ public class SongTableModel extends AbstractTableModel {
 
     public int getListSize() {
         return list.size();
+    }
+
+    public void addToDB() {
+        AccessDB adb = AccessDB.getInstance();
+        try {
+            for (Song song : list) {
+
+                adb.persistEntity(song);
+            }
+        } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Es gab ein Problem beim Speichern!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
